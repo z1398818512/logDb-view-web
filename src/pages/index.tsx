@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'umi';
+import { CopyFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import { Button, DatePicker, Table, Form, Input } from 'antd';
+import { Button, DatePicker, Table, Form, Input,notification } from 'antd';
 import styles from './index.less';
 import initIo from './socket.js'
 import { Menu } from 'antd';
 import { MailOutlined, AppstoreOutlined } from '@ant-design/icons';
 import RealLog from './RealLog'
 import Replay from './Replay'
-
 var socket = {}
+
+
 
 export default function IndexPage() {
   const location = useLocation();
@@ -22,11 +24,28 @@ export default function IndexPage() {
       title: '日志详情', dataIndex: 'loggerInfo', key: 'loggerInfo', ellipsis: true, textWrap: 'word-break', className: 'tablelogInfo',
       render(info, record) {
         if (record.logType === "recordVideo") {
-          return (<Replay data={info} />)
+          return '-'
         }
         return info
       }
     },
+    {
+      title:'操作', render(info, record) {
+        if (record.logType === "recordVideo") {
+          return (<Replay data={info.loggerInfo} />)
+        }
+       return  <CopyFilled style={{fontSize:20}} onClick={() => { 
+         const tkl = document.getElementById('copyDom')
+         tkl.value = record.loggerInfo;
+         tkl.select()
+         document.execCommand("Copy");
+         notification.success({
+          message:'复制成功',
+          duration:1,
+         })
+        }}  />
+      }
+    }
   ];
   const [data, setData] = useState([])
   const [loding, setLoding] = useState(false)
@@ -93,11 +112,11 @@ export default function IndexPage() {
 
   const onFinish = (values: any) => {
     console.log('finish:', values)
-    const { start, end, logType } = values
+    const { start, end, logType,infoText } = values
     const data = {
       start: start ? new Date(start).getTime() : undefined,
       end: end ? new Date(end).getTime() : undefined,
-      logType
+      logType,infoText
     }
     setFilterData(data)
     queryArr({ ...data, pageIndex: 1 })
@@ -143,6 +162,9 @@ export default function IndexPage() {
           <Form.Item label="类型" name="logType">
             <Input />
           </Form.Item>
+          <Form.Item label="内容" name="infoText">
+            <Input />
+          </Form.Item>
           <Form.Item >
             <Button loading={loding} type="primary" htmlType="submit">查询</Button>
           </Form.Item>
@@ -165,6 +187,7 @@ export default function IndexPage() {
       <div style={{ display: current === 'realLog' ? 'block' : 'none' }}>
         <RealLog socket={socket} />
       </div>
+      <textarea title='复制详情' id="copyDom" style={{opacity:0,position:'absolute'}} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ const io = require('socket.io-client');
 const initIo = (parmse)=>{
   const {roomId} = parmse;
   return new Promise((resolve,reject)=>{
-    const socket = io('http://127.0.0.1:7001',{
+    const socket = io('http://172.16.30.231:7001',{
       query: {roomId}
     });
     // 连接服务端
