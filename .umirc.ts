@@ -4,9 +4,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  routes: [
-    { path: '/', component: '@/pages/index' },
-  ],
+  routes: [{ path: '/', component: '@/pages/index' }],
   fastRefresh: {},
-  publicPath: process.env.NODE_ENV === 'production' ? '/public/web/dist/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 });

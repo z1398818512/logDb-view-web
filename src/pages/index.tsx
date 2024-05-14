@@ -193,7 +193,7 @@ export default function IndexPage() {
             <Input />
           </Form.Item>
           <Form.Item>
-            <Button loading={loding} type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit">
               查询
             </Button>
           </Form.Item>
