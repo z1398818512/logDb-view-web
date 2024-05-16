@@ -21,11 +21,12 @@
   },
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
-    "antd": "^4.18.9",
+    "antd": "^5.17.2",
     "codemirror": "^5.65.3",
     "react": "17.x",
     "react-codemirror2": "^7.2.1",
     "react-dom": "17.x",
+    "react-json-view": "^1.21.3",
     "rrweb-player": "^0.7.13",
     "socket.io-client": "^2.4.0",
     "umi": "^3.5.21"
