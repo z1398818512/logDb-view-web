@@ -244,7 +244,7 @@ export default function IndexPage() {
         </Menu>
         <div className={styles.connectionMain} onClick={handleShowUser}>
           {userId}
-          {isConnection && userList.includes(userId) ? (
+          {isConnection ? (
             <span style={{ color: '#057805', marginLeft: 5 }}>
               <LinkOutlined
                 title="已连接"
@@ -259,7 +259,7 @@ export default function IndexPage() {
                 style={{ fontSize: 20, color: '#E17874' }}
               />
               {userList.includes(userId) ? (
-                <span>(未连接)</span>
+                <span>(本地未连接)</span>
               ) : (
                 <span>(用户已断开)</span>
               )}
