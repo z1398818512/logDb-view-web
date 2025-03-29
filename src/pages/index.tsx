@@ -325,6 +325,7 @@ export default function IndexPage() {
                 src={jsonObj}
                 displayDataTypes={false}
                 displayObjectSize={false}
+                name={false}
               />
             ) : (
               <div>{textLog}</div>

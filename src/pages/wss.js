@@ -4,6 +4,7 @@ export default function ({ onConnection, onClosed, onGetUser }) {
   return new Promise((resolve) => {
     const { roomId } = parseUrlParams(location.href) || {};
     const onMap = new Map();
+    let timerId = null;
 
     const wss = new WebSocket(
       `wss://oivoee.laf.run/__websocket__?type=admin${
@@ -13,6 +14,7 @@ export default function ({ onConnection, onClosed, onGetUser }) {
 
     wss.onopen = (socket) => {
       console.log('connected');
+      handleSendSleep();
       // wss.send("hi");
     };
 
@@ -54,9 +56,25 @@ export default function ({ onConnection, onClosed, onGetUser }) {
     wss.onclose = () => {
       console.log('closed');
       onClosed();
+      clearInterval(timerId);
     };
+
+    function handleSendSleep(t = 1000 * 60 * 5) {
+      timerId = setInterval(() => {
+        debugger;
+        wss.send(
+          JSON.stringify({
+            clientType: 'admin',
+            data: '',
+            roomId: roomId,
+            type: 'sleep',
+          }),
+        );
+      }, t);
+    }
   });
 }
+
 export function parseUrlParams(url) {
   const params = {};
   const queryString = url.split('?')[1];

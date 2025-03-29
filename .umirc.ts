@@ -7,4 +7,5 @@ export default defineConfig({
   routes: [{ path: '/', component: '@/pages/index' }],
   fastRefresh: {},
   publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
+  base: '/index.html',
 });
