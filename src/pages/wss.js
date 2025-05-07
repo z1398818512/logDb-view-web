@@ -7,6 +7,7 @@ export default function ({ onConnection, onClosed, onGetUser }) {
     let timerId = null;
 
     const wss = new WebSocket(
+      // `wss://cooq7nv2nx.hzh.sealos.run/__websocket__?type=admin${
       `wss://oivoee.laf.run/__websocket__?type=admin${
         roomId ? '&userId=' + roomId : ''
       }`,
@@ -29,7 +30,8 @@ export default function ({ onConnection, onClosed, onGetUser }) {
 
             break;
           case 'getUser':
-            onGetUser(data.data);
+            const users = data.data.map((user) => user);
+            onGetUser(users);
 
             break;
           default:
@@ -61,7 +63,6 @@ export default function ({ onConnection, onClosed, onGetUser }) {
 
     function handleSendSleep(t = 1000 * 60 * 5) {
       timerId = setInterval(() => {
-        debugger;
         wss.send(
           JSON.stringify({
             clientType: 'admin',

@@ -107,13 +107,13 @@ export default function IndexPage() {
   const [current, setCurrent] = useState('logInfo');
   const [userId, setUserId] = useState('');
   const [isConnection, setIsConnection] = useState(false);
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState([]) as any;
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 0,
-    pageSizeOptions: [10, 100, 200, 500],
+    pageSizeOptions: [1, 5, 10, 100, 200, 500],
     defaultPageSize: 10,
   });
 
@@ -149,10 +149,10 @@ export default function IndexPage() {
     setIsConnection(false);
     setLoding(false);
   };
-  const onGetUser = (userList = []) => {
-    setUserList(userList);
-    if (userList.includes(userId)) {
-      onClosed();
+  const onGetUser = (users: Array<string> = []) => {
+    setUserList(users.map((user) => String(user)));
+    if (users.includes(userId)) {
+      setLoding(false);
     } else {
       setIsConnection(true);
       setLoding(false);
@@ -243,26 +243,47 @@ export default function IndexPage() {
           </Menu.Item>
         </Menu>
         <div className={styles.connectionMain} onClick={handleShowUser}>
-          {userId}
           {isConnection ? (
-            <span style={{ color: '#057805', marginLeft: 5 }}>
-              <LinkOutlined
-                title="已连接"
-                style={{ fontSize: 20, color: '#057805' }}
-              />
-              <span>(已连接)</span>
-            </span>
+            <div>
+              <span
+                style={{ color: '#057805', marginLeft: 5, marginRight: 20 }}
+              >
+                <LinkOutlined
+                  title="已连接"
+                  style={{ fontSize: 20, color: '#057805' }}
+                />
+                <span>本地已连接</span>
+              </span>
+              {/* {(userList.indexOf(userId) ? (userId) : <span style={{ color: '#E17874', marginLeft: 5 }}>
+                <ApiOutlined
+                title="已断开"
+                style={{ fontSize: 20, color: '#E17874' }}/>
+                  <span>(远程用户已断开)</span>
+              </span>)} */}
+              {~userList.indexOf(userId) ? (
+                <span>
+                  <span style={{ marginRight: 20 }}>|</span>(已连接远程客户：{' '}
+                  <span style={{ color: '#057805' }}>{userId}</span>)
+                </span>
+              ) : (
+                userId && (
+                  <span style={{ color: '#E17874', marginLeft: 5 }}>
+                    <ApiOutlined
+                      title="已断开"
+                      style={{ fontSize: 20, color: '#E17874' }}
+                    />
+                    <span>远程用户已断开</span>
+                  </span>
+                )
+              )}
+            </div>
           ) : (
             <span style={{ color: '#E17874', marginLeft: 5 }}>
               <ApiOutlined
                 title="已断开"
                 style={{ fontSize: 20, color: '#E17874' }}
-              />
-              {userList.includes(userId) ? (
-                <span>(本地未连接)</span>
-              ) : (
-                <span>(用户已断开)</span>
-              )}
+              />{' '}
+              <span>(本地已断开)</span>{' '}
             </span>
           )}
         </div>
