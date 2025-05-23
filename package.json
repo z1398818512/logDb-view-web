@@ -23,6 +23,7 @@
     "@ant-design/pro-layout": "^6.5.0",
     "antd": "^5.17.2",
     "codemirror": "^5.65.3",
+    "pako": "^2.1.0",
     "react": "17.x",
     "react-codemirror2": "^7.2.1",
     "react-dom": "17.x",

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'umi';
 import { CopyFilled } from '@ant-design/icons';
+import pako from 'pako';
 // import 'antd/dist/antd.css';
 import {
   Button,
@@ -121,18 +122,43 @@ export default function IndexPage() {
     socket = await initIo({ roomId, onConnection, onClosed, onGetUser });
 
     socket.on('responseData', ({ data }) => {
-      const { dataList, total, pageIndex, pageSize } = data;
+      const {
+        dataList: compressedData,
+        total,
+        pageIndex,
+        pageSize,
+        compressed,
+      } = data;
+
+      // 新增解压逻辑
+      let dataList = compressedData;
+      if (compressed === 'gzip') {
+        try {
+          const byteArray = new Uint8Array(
+            atob(compressedData)
+              .split('')
+              .map((c) => c.charCodeAt(0)),
+          );
+          const uncompressed = pako.ungzip(byteArray, { to: 'string' });
+          dataList = JSON.parse(uncompressed);
+        } catch (err) {
+          console.error('解压失败:', err);
+        }
+      }
+
       setPagination({
         ...pagination,
         total,
         current: pageIndex,
         pageSize,
       });
+
       dataList.forEach((item) => {
         if (typeof item.loggerInfo !== 'string') {
           item.loggerInfo = JSON.stringify(item.loggerInfo);
         }
       });
+
       console.log('请求到参数');
       setData(dataList);
       setLoding(false);
