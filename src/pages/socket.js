@@ -5,8 +5,8 @@ const initIo = (params) => {
   const { roomId, onConnection, onClosed, onGetUser } = params;
   return new Promise((resolve) => {
     let timerId = null;
-
-    const socket = io('http://127.0.0.1:7001/admin', {
+    // const socket = io('http://127.0.0.1:7001/admin', {
+    const socket = io('https://printcenter.kuaidizs.cn/admin', {
       path: '/logdb/socket.io',
       query: { roomId, type: 'admin' },
       transports: ['websocket'],
