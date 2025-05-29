@@ -1,39 +1,67 @@
 'use strict';
 const io = require('socket.io-client');
-const initIo = (parmse)=>{
-  const {roomId} = parmse;
-  return new Promise((resolve,reject)=>{
-    const socket = io('http://172.16.30.231:7001',{
-      query: {roomId}
+
+const initIo = (params) => {
+  const { roomId, onConnection, onClosed, onGetUser } = params;
+  return new Promise((resolve) => {
+    let timerId = null;
+
+    const socket = io('http://127.0.0.1:7001/admin', {
+      path: '/logdb/socket.io',
+      query: { roomId, type: 'admin' },
+      transports: ['websocket'],
     });
-    // 连接服务端
+
+    // 心跳机制
+    function handleSendSleep(t = 1000 * 60 * 5) {
+      timerId = setInterval(() => {
+        socket.emit('sleep', {
+          clientType: 'admin',
+          data: '',
+          roomId: roomId,
+          type: 'sleep',
+        });
+      }, t);
+    }
+
     socket.on('connect', () => {
-      console.log('connect!');
-      resolve(socket)
+      handleSendSleep();
+      resolve(socket);
     });
 
-    socket.on('sendError', msg => {
-      console.log('myChat from sendError: %s!', JSON.stringify(msg));
-      resolve(socket)
+    socket.on('userList', (data) => {
+      const { userId } = data;
+      const users = data.data.map((user) => user);
+      onConnection({ userId });
+      onGetUser(users);
     });
 
-    // 系统事件
-    socket.on('disconnect', msg => {
-      console.log('ops,连接关闭');
-      resolve(socket)
+    socket.on('connection', (data) => {
+      const { userId } = data;
+      onConnection({ userId });
     });
 
-    socket.on('disconnecting', () => {
-      console.log('ops,连接关闭');
-      resolve(socket)
+    socket.on('getUser', (data) => {
+      const users = data.map((user) => String(user));
+      onGetUser(users);
     });
 
-    socket.on('error', msg => {
-      console.log('ops,error')
-      resolve(socket)
+    socket.on('disconnect', () => {
+      onClosed();
+      clearInterval(timerId);
     });
-  })
-}
-   
- 
+
+    // 保持与wss.js相同的emit接口
+    socket.emit = (() => {
+      const originalEmit = socket.emit.bind(socket);
+      return (type, data) => {
+        originalEmit(type, {
+          data,
+          roomId,
+        });
+      };
+    })();
+  });
+};
+
 export default initIo;

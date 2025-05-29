@@ -13,7 +13,8 @@ import {
   Drawer,
 } from 'antd';
 import styles from './index.less';
-// import initIo from './socket.js';
+import initIo from './socket.js';
+// import initIo from './wss.js';
 import { Menu } from 'antd';
 import {
   MailOutlined,
@@ -24,7 +25,7 @@ import {
 import RealLog from './RealLog';
 import Replay from './Replay';
 import ErrCode from './ErrCode';
-import initIo from './wss.js';
+
 // import the react-json-view component
 import ReactJson from 'react-json-view';
 

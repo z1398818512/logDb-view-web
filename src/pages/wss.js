@@ -22,6 +22,7 @@ export default function ({ onConnection, onClosed, onGetUser }) {
     wss.onmessage = (res) => {
       try {
         const data = JSON.parse(res.data || '{}');
+
         const { type, userId } = data;
         switch (type) {
           case 'connection':
