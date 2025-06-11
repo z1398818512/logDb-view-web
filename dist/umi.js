@@ -49,7 +49,7 @@
     (n.o = function (e, t) {
       return Object.prototype.hasOwnProperty.call(e, t);
     }),
-    (n.p = '/'),
+    (n.p = '/logdb_view_web/'),
     n((n.s = 0));
 })({
   '++zV': function (e, t, n) {
@@ -70842,7 +70842,7 @@
           G(!1);
         },
         ue = (e) => {
-          window.location.href = window.location.origin + '/?roomId='.concat(e);
+          window.location.href = window.location.href + '?roomId='.concat(e);
         };
       return Object(jD['jsxs'])('div', {
         className: oD.a.logIndex,
@@ -106526,7 +106526,7 @@
         ],
       }),
       W = n('YS25'),
-      U = { basename: '/index.html' };
+      U = { basename: '/logdb_view_web/index.html' };
     window.routerBase && (U.basename = window.routerBase);
     var V = Object({ NODE_ENV: 'production' }).__IS_SERVER
         ? null

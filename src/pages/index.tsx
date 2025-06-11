@@ -255,7 +255,7 @@ export default function IndexPage() {
     setIsOpenDrawer(false);
   };
   const handleCheckUser = (user) => {
-    window.location.href = window.location.origin + `/?roomId=${user}`;
+    window.location.href = window.location.href + `?roomId=${user}`;
   };
 
   return (
