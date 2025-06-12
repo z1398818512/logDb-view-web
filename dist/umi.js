@@ -70862,7 +70862,9 @@
         },
         de = (e) => {
           window.location.href =
-            window.location.origin + '/logdb_view_web/' + '?roomId='.concat(e);
+            window.location.origin +
+            '/logdb_view_web/index.html' +
+            '?roomId='.concat(e);
         };
       return Object(jD['jsxs'])('div', {
         className: oD.a.logIndex,

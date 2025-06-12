@@ -276,7 +276,7 @@ export default function IndexPage() {
   };
   const handleCheckUser = (user) => {
     window.location.href =
-      window.location.origin + process.env.APP_BASE_PATH + `?roomId=${user}`;
+      window.location.origin + process.env.APP_BASE + `?roomId=${user}`;
   };
 
   return (
