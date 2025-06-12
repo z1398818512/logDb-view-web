@@ -70564,10 +70564,11 @@
       bW = n.n(gW),
       yW = {};
     function wW() {
-      var e = Object(tN['g'])(),
-        t = e.query || {},
-        n = t.roomId,
-        o = [
+      var e = Object(r['useRef'])([]),
+        t = Object(tN['g'])(),
+        n = t.query || {},
+        o = n.roomId,
+        i = [
           {
             title: '\u65e5\u671f',
             dataIndex: 'time',
@@ -70642,154 +70643,172 @@
             },
           },
         ],
-        i = Object(r['useState'])([]),
-        a = Object(ZM['a'])(i, 2),
-        l = a[0],
-        c = a[1],
-        s = Object(r['useState'])([]),
-        u = Object(ZM['a'])(s, 2),
-        d = u[0],
-        f = u[1],
-        p = Object(r['useState'])(!1),
-        h = Object(ZM['a'])(p, 2),
-        m = h[0],
-        v = h[1],
-        g = Object(r['useState'])(null),
-        b = Object(ZM['a'])(g, 2),
-        y = b[0],
-        w = b[1],
-        O = Object(r['useState'])(''),
-        x = Object(ZM['a'])(O, 2),
-        C = x[0],
-        j = x[1],
-        S = Object(r['useState'])({}),
-        k = Object(ZM['a'])(S, 2),
-        E = k[0],
-        $ = k[1],
-        I = Object(r['useState'])('logInfo'),
-        M = Object(ZM['a'])(I, 2),
-        N = M[0],
-        T = M[1],
-        A = Object(r['useState'])(''),
-        P = Object(ZM['a'])(A, 2),
-        R = P[0],
-        _ = P[1],
-        L = Object(r['useState'])(!1),
-        D = Object(ZM['a'])(L, 2),
-        F = D[0],
-        B = D[1],
-        z = Object(r['useState'])([]),
-        H = Object(ZM['a'])(z, 2),
-        W = H[0],
-        U = H[1],
-        V = Object(r['useState'])(!1),
-        q = Object(ZM['a'])(V, 2),
-        K = q[0],
-        G = q[1],
-        Y = Object(r['useState'])({
+        a = Object(r['useState'])([]),
+        l = Object(ZM['a'])(a, 2),
+        c = l[0],
+        s = l[1],
+        u = Object(r['useState'])([]),
+        d = Object(ZM['a'])(u, 2),
+        f = d[0],
+        p = d[1],
+        h = Object(r['useState'])(!1),
+        m = Object(ZM['a'])(h, 2),
+        v = m[0],
+        g = m[1],
+        b = Object(r['useState'])(null),
+        y = Object(ZM['a'])(b, 2),
+        w = y[0],
+        O = y[1],
+        x = Object(r['useState'])(''),
+        C = Object(ZM['a'])(x, 2),
+        j = C[0],
+        S = C[1],
+        k = Object(r['useState'])({}),
+        E = Object(ZM['a'])(k, 2),
+        $ = E[0],
+        I = E[1],
+        M = Object(r['useState'])('logInfo'),
+        N = Object(ZM['a'])(M, 2),
+        T = N[0],
+        A = N[1],
+        P = Object(r['useState'])(''),
+        R = Object(ZM['a'])(P, 2),
+        _ = R[0],
+        L = R[1],
+        D = Object(r['useState'])(!1),
+        F = Object(ZM['a'])(D, 2),
+        B = F[0],
+        z = F[1],
+        H = Object(r['useState'])([]),
+        W = Object(ZM['a'])(H, 2),
+        U = W[0],
+        V = W[1],
+        q = Object(r['useState'])(!1),
+        K = Object(ZM['a'])(q, 2),
+        G = K[0],
+        Y = K[1],
+        X = Object(r['useState'])({
           current: 1,
           pageSize: 10,
           total: 0,
           pageSizeOptions: [1, 5, 10, 100, 200, 500],
           defaultPageSize: 10,
         }),
-        X = Object(ZM['a'])(Y, 2),
-        Z = X[0],
-        Q = X[1];
+        Z = Object(ZM['a'])(X, 2),
+        Q = Z[0],
+        J = Z[1];
       Object(r['useEffect'])(
         Object(XM['a'])(
-          eN.a.mark(function e() {
-            return eN.a.wrap(function (e) {
+          eN.a.mark(function t() {
+            return eN.a.wrap(function (t) {
               while (1)
-                switch ((e.prev = e.next)) {
+                switch ((t.prev = t.next)) {
                   case 0:
                     return (
-                      (e.next = 2),
+                      (t.next = 2),
                       lD({
-                        roomId: n,
-                        onConnection: J,
-                        onClosed: ee,
-                        onGetUser: te,
+                        roomId: o,
+                        onConnection: ee,
+                        onClosed: te,
+                        onGetUser: ne,
                       })
                     );
                   case 2:
-                    (yW = e.sent),
-                      yW.on('responseData', (e) => {
-                        var t = e.data,
-                          n = t.dataList,
-                          r = t.total,
-                          o = t.pageIndex,
-                          i = t.pageSize,
-                          a = t.compressed,
-                          l = n;
-                        if ('gzip' === a)
+                    (yW = t.sent),
+                      yW.on('responseData', (t) => {
+                        var n = t.data,
+                          r = n.dataList,
+                          o = n.total,
+                          i = n.pageIndex,
+                          a = n.pageSize,
+                          l = n.compressed,
+                          c = n.chunkInfo,
+                          u = r;
+                        if ('chunk' === l) {
+                          var d = c.currentChunk,
+                            f = c.totalChunks,
+                            p = c.size;
+                          if ((u && (e.current[d - 1] = atob(u)), d < f))
+                            return !1;
+                          var h = e.current.join('');
+                          e.current = [];
+                          for (
+                            var m = h, v = new Uint8Array(p), b = 0;
+                            b < m.length;
+                            b++
+                          )
+                            v[b] = m.charCodeAt(b);
+                          var y = JSON.parse(nD.inflate(v, { to: 'string' }));
+                          u = y;
+                        }
+                        if ('gzip' === l)
                           try {
-                            var s = new Uint8Array(
-                                atob(n)
+                            var w = new Uint8Array(
+                                atob(r)
                                   .split('')
                                   .map((e) => e.charCodeAt(0)),
                               ),
-                              u = nD.ungzip(s, { to: 'string' });
-                            l = JSON.parse(u);
+                              O = nD.ungzip(w, { to: 'string' });
+                            u = JSON.parse(O);
                           } catch (hP) {
                             console.error('\u89e3\u538b\u5931\u8d25:', hP);
                           }
-                        Q(
+                        J(
                           Object(YM['a'])(
-                            Object(YM['a'])({}, Z),
+                            Object(YM['a'])({}, Q),
                             {},
-                            { total: r, current: o, pageSize: i },
+                            { total: o, current: i, pageSize: a },
                           ),
                         ),
-                          l.forEach((e) => {
+                          u.forEach((e) => {
                             'string' !== typeof e.loggerInfo &&
                               (e.loggerInfo = JSON.stringify(e.loggerInfo));
                           }),
                           console.log('\u8bf7\u6c42\u5230\u53c2\u6570'),
-                          c(l),
-                          v(!1);
+                          s(u),
+                          g(!1);
                       }),
-                      ne();
+                      re();
                   case 5:
                   case 'end':
-                    return e.stop();
+                    return t.stop();
                 }
-            }, e);
+            }, t);
           }),
         ),
         [],
       );
-      var J = (e) => {
+      var ee = (e) => {
           var t = e.userId,
             n = void 0 === t ? '' : t;
-          _(n), B(!0);
+          L(n), z(!0);
         },
-        ee = () => {
-          B(!1), v(!1);
-        },
-        te = function () {
-          var e =
-            arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-          U(e.map((e) => String(e))), e.includes(R) || B(!0), v(!1);
+        te = () => {
+          z(!1), g(!1);
         },
         ne = function () {
           var e =
+            arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+          V(e.map((e) => String(e))), e.includes(_) || z(!0), g(!1);
+        },
+        re = function () {
+          var e =
             arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-          v(!0);
-          var t = Z.current,
-            n = Z.pageSize;
+          g(!0);
+          var t = Q.current,
+            n = Q.pageSize;
           yW.emit(
             'query',
             Object(YM['a'])(
-              Object(YM['a'])({ pageSize: n, pageIndex: t }, E),
+              Object(YM['a'])({ pageSize: n, pageIndex: t }, $),
               e,
             ),
           );
         },
-        re = (e) => {
-          console.log('click ', e), T(e.key);
-        },
         oe = (e) => {
+          console.log('click ', e), A(e.key);
+        },
+        ie = (e) => {
           console.log('finish:', e);
           var t = e.start,
             n = e.end,
@@ -70801,20 +70820,20 @@
               logType: r,
               infoText: o,
             };
-          $(i),
-            ne(Object(YM['a'])(Object(YM['a'])({}, i), {}, { pageIndex: 1 }));
+          I(i),
+            re(Object(YM['a'])(Object(YM['a'])({}, i), {}, { pageIndex: 1 }));
         },
-        ie = (e, t) => {
-          Q(
+        ae = (e, t) => {
+          J(
             Object(YM['a'])(
-              Object(YM['a'])({}, Z),
+              Object(YM['a'])({}, Q),
               {},
               { current: e, pageSize: t },
             ),
           ),
-            ne({ pageIndex: e, pageSize: t });
+            re({ pageIndex: e, pageSize: t });
         },
-        ae = (e) => {
+        le = (e) => {
           switch (e.logType) {
             case 'err':
               return oD.a.errorRows;
@@ -70822,7 +70841,7 @@
               return '';
           }
         },
-        le = function () {
+        ce = function () {
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
@@ -70833,16 +70852,17 @@
             var r = JSON.parse(t);
             n = 'object' === typeof r;
           } catch (hP) {}
-          f([e.id]), n ? w(JSON.parse(t)) : (w(null), j(t));
-        },
-        ce = () => {
-          G(!0);
+          p([e.id]), n ? O(JSON.parse(t)) : (O(null), S(t));
         },
         se = () => {
-          G(!1);
+          Y(!0);
         },
-        ue = (e) => {
-          window.location.href = window.location.href + '?roomId='.concat(e);
+        ue = () => {
+          Y(!1);
+        },
+        de = (e) => {
+          window.location.href =
+            window.location.origin + '/logdb_view_web/' + '?roomId='.concat(e);
         };
       return Object(jD['jsxs'])('div', {
         className: oD.a.logIndex,
@@ -70851,8 +70871,8 @@
             className: oD.a.headMain,
             children: [
               Object(jD['jsxs'])(Hp, {
-                onClick: re,
-                selectedKeys: [N],
+                onClick: oe,
+                selectedKeys: [T],
                 mode: 'horizontal',
                 children: [
                   Object(jD['jsx'])(
@@ -70875,8 +70895,8 @@
               }),
               Object(jD['jsx'])('div', {
                 className: oD.a.connectionMain,
-                onClick: ce,
-                children: F
+                onClick: se,
+                children: B
                   ? Object(jD['jsxs'])('div', {
                       children: [
                         Object(jD['jsxs'])('span', {
@@ -70895,7 +70915,7 @@
                             }),
                           ],
                         }),
-                        ~W.indexOf(R)
+                        ~U.indexOf(_)
                           ? Object(jD['jsxs'])('span', {
                               children: [
                                 Object(jD['jsx'])('span', {
@@ -70906,12 +70926,12 @@
                                 ' ',
                                 Object(jD['jsx'])('span', {
                                   style: { color: '#057805' },
-                                  children: R,
+                                  children: _,
                                 }),
                                 ')',
                               ],
                             })
-                          : R &&
+                          : _ &&
                             Object(jD['jsxs'])('span', {
                               style: { color: '#E17874', marginLeft: 5 },
                               children: [
@@ -70946,12 +70966,12 @@
           }),
           Object(jD['jsxs'])('div', {
             style: {
-              display: 'logInfo' === N ? 'block' : 'none',
+              display: 'logInfo' === T ? 'block' : 'none',
               marginTop: 10,
             },
             children: [
               Object(jD['jsxs'])(aE, {
-                onFinish: oe,
+                onFinish: ie,
                 layout: 'inline',
                 style: { marginBottom: 10 },
                 children: [
@@ -70988,14 +71008,14 @@
                 className: oD.a.boxMain,
                 children: [
                   Object(jD['jsx'])(vS, {
-                    columns: o,
-                    dataSource: l,
+                    columns: i,
+                    dataSource: c,
                     pagination: Object(YM['a'])(
-                      Object(YM['a'])({}, Z),
+                      Object(YM['a'])({}, Q),
                       {},
-                      { onChange: ie },
+                      { onChange: ae },
                     ),
-                    loading: m,
+                    loading: v,
                     scroll: { y: 650 },
                     expandable: {
                       expandedRowRender: (e) =>
@@ -71004,14 +71024,14 @@
                           children: e.loggerInfo,
                         }),
                     },
-                    rowClassName: ae,
+                    rowClassName: le,
                     rowKey: 'id',
                     className: oD.a.logTable,
-                    onRow: (e) => ({ onClick: le.bind(null, e) }),
+                    onRow: (e) => ({ onClick: ce.bind(null, e) }),
                     rowSelection: {
                       type: 'radio',
                       columnWidth: 0,
-                      selectedRowKeys: d,
+                      selectedRowKeys: f,
                     },
                   }),
                   Object(jD['jsxs'])('div', {
@@ -71020,15 +71040,15 @@
                       Object(jD['jsx'])('h3', {
                         children: '\u65e5\u5fd7\u8be6\u60c5',
                       }),
-                      y
+                      w
                         ? Object(jD['jsx'])(bW.a, {
                             theme: 'bespin',
-                            src: y,
+                            src: w,
                             displayDataTypes: !1,
                             displayObjectSize: !1,
                             name: !1,
                           })
-                        : Object(jD['jsx'])('div', { children: C }),
+                        : Object(jD['jsx'])('div', { children: j }),
                     ],
                   }),
                 ],
@@ -71036,7 +71056,7 @@
             ],
           }),
           Object(jD['jsx'])('div', {
-            style: { display: 'realLog' === N ? 'block' : 'none' },
+            style: { display: 'realLog' === T ? 'block' : 'none' },
             children: Object(jD['jsx'])(kD, { socket: yW }),
           }),
           Object(jD['jsx'])('textarea', {
@@ -71046,14 +71066,14 @@
           }),
           Object(jD['jsx'])(Wr, {
             title: '\u53ef\u8fde\u63a5\u7684\u7528\u6237',
-            onClose: se,
-            open: K,
-            children: W.map((e) =>
+            onClose: ue,
+            open: G,
+            children: U.map((e) =>
               Object(jD['jsx'])(hm, {
-                type: e == R ? 'primary' : 'text',
+                type: e == _ ? 'primary' : 'text',
                 size: 'small',
                 style: { marginRight: 5 },
-                onClick: ue.bind(null, e),
+                onClick: de.bind(null, e),
                 children: e,
               }),
             ),
