@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'umi';
 import { CopyFilled } from '@ant-design/icons';
 import pako from 'pako';
@@ -34,6 +34,7 @@ import ReactJson from 'react-json-view';
 var socket = {};
 
 export default function IndexPage() {
+  const chunkDataList = useRef([]);
   const location = useLocation();
   const { roomId } = location.query || {};
   const columns = [
@@ -123,16 +124,35 @@ export default function IndexPage() {
     socket = await initIo({ roomId, onConnection, onClosed, onGetUser });
 
     socket.on('responseData', ({ data }) => {
-      const {
+      let {
         dataList: compressedData,
         total,
         pageIndex,
         pageSize,
         compressed,
+        chunkInfo,
       } = data;
-
       // 新增解压逻辑
       let dataList = compressedData;
+      if (compressed === 'chunk') {
+        const { currentChunk, totalChunks, size } = chunkInfo;
+        dataList && (chunkDataList.current[currentChunk - 1] = atob(dataList));
+        if (currentChunk < totalChunks) {
+          return false;
+        }
+
+        const combinedBase64 = chunkDataList.current.join('');
+        chunkDataList.current = [];
+        const binaryString = combinedBase64;
+        const uintArray = new Uint8Array(size);
+        for (let i = 0; i < binaryString.length; i++) {
+          uintArray[i] = binaryString.charCodeAt(i);
+        }
+        const originalData = JSON.parse(
+          pako.inflate(uintArray, { to: 'string' }),
+        );
+        dataList = originalData;
+      }
       if (compressed === 'gzip') {
         try {
           const byteArray = new Uint8Array(
@@ -255,7 +275,8 @@ export default function IndexPage() {
     setIsOpenDrawer(false);
   };
   const handleCheckUser = (user) => {
-    window.location.href = window.location.href + `?roomId=${user}`;
+    window.location.href =
+      window.location.origin + process.env.APP_BASE_PATH + `?roomId=${user}`;
   };
 
   return (
