@@ -1,4 +1,5 @@
 // const roomId = sessionStorage.getItem('roomId')
+/** laf的对接方式， 无需再看 */
 
 export default function ({ onConnection, onClosed, onGetUser }) {
   return new Promise((resolve) => {

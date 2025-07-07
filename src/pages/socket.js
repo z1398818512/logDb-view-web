@@ -1,12 +1,15 @@
 'use strict';
 const io = require('socket.io-client');
+import { apiUrl } from '../config/index';
+import { Modal } from 'antd';
 
 const initIo = (params) => {
   const { roomId, onConnection, onClosed, onGetUser } = params;
   return new Promise((resolve) => {
     let timerId = null;
-    // const socket = io('http://127.0.0.1:7001/admin', {
-    const socket = io('https://printcenter.kuaidizs.cn/admin', {
+    const socket = io(`${apiUrl}/admin`, {
+      // const socket = io('http://127.0.0.1:7001/admin', {
+      // const socket = io('https://printcenter.kuaidizs.cn/admin', {
       path: '/logdb/socket.io',
       query: { roomId, type: 'admin' },
       transports: ['websocket'],
@@ -49,6 +52,14 @@ const initIo = (params) => {
     socket.on('disconnect', () => {
       onClosed();
       clearInterval(timerId);
+    });
+    socket.on('exit', (data) => {
+      onClosed();
+      clearInterval(timerId);
+      Modal.info({
+        title: '您已被挤下线',
+        content: '该远程用户被其他管理员登入，请重新选择远程用户',
+      });
     });
 
     // 保持与wss.js相同的emit接口

@@ -11,6 +11,8 @@ import {
   Input,
   notification,
   Drawer,
+  Progress,
+  message,
 } from 'antd';
 import styles from './index.less';
 import initIo from './socket.js';
@@ -21,6 +23,7 @@ import {
   AppstoreOutlined,
   LinkOutlined,
   ApiOutlined,
+  SwapOutlined,
 } from '@ant-design/icons';
 import RealLog from './RealLog';
 import Replay from './Replay';
@@ -28,6 +31,7 @@ import ErrCode from './ErrCode';
 
 // import the react-json-view component
 import ReactJson from 'react-json-view';
+import WhiteUser from './WhiteUser';
 
 // use the component in your app!
 
@@ -112,6 +116,7 @@ export default function IndexPage() {
   const [isConnection, setIsConnection] = useState(false);
   const [userList, setUserList] = useState([]) as any;
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -123,7 +128,12 @@ export default function IndexPage() {
   useEffect(async () => {
     socket = await initIo({ roomId, onConnection, onClosed, onGetUser });
 
-    socket.on('responseData', ({ data }) => {
+    socket.on('responseData', ({ data, state = 100, msg = '' }) => {
+      if (state != 100) {
+        message.error(msg);
+        setLoding(false);
+        return;
+      }
       let {
         dataList: compressedData,
         total,
@@ -136,6 +146,8 @@ export default function IndexPage() {
       let dataList = compressedData;
       if (compressed === 'chunk') {
         const { currentChunk, totalChunks, size } = chunkInfo;
+        const newProgress = Math.round((currentChunk / totalChunks) * 100);
+        setProgress(newProgress);
         dataList && (chunkDataList.current[currentChunk - 1] = atob(dataList));
         if (currentChunk < totalChunks) {
           return false;
@@ -183,6 +195,7 @@ export default function IndexPage() {
       console.log('请求到参数');
       setData(dataList);
       setLoding(false);
+      setProgress(0);
     });
 
     queryArr();
@@ -289,6 +302,9 @@ export default function IndexPage() {
           <Menu.Item key="realLog" icon={<AppstoreOutlined />}>
             实时日志
           </Menu.Item>
+          <Menu.Item key="whiteUser" icon={<AppstoreOutlined />}>
+            直连白名单
+          </Menu.Item>
         </Menu>
         <div className={styles.connectionMain} onClick={handleShowUser}>
           {isConnection ? (
@@ -334,6 +350,10 @@ export default function IndexPage() {
               <span>(本地已断开)</span>{' '}
             </span>
           )}
+          <div style={{ marginLeft: 50, color: '#1677ff' }}>
+            <SwapOutlined title="切换用户" style={{ fontSize: 18 }} />
+            切换用户
+          </div>
         </div>
       </div>
 
@@ -367,7 +387,13 @@ export default function IndexPage() {
             columns={columns}
             dataSource={data}
             pagination={{ ...pagination, onChange }}
-            loading={loding}
+            loading={{
+              spinning: loding,
+              indicator: (
+                <Progress percent={progress} type="circle" size={100} />
+              ),
+              // tip: `正在加载数据 (${progress}%)`
+            }}
             scroll={{ y: 650 }}
             expandable={{
               expandedRowRender: (record) => (
@@ -404,6 +430,9 @@ export default function IndexPage() {
       </div>
       <div style={{ display: current === 'realLog' ? 'block' : 'none' }}>
         <RealLog socket={socket} />
+      </div>
+      <div style={{ display: current === 'whiteUser' ? 'block' : 'none' }}>
+        <WhiteUser />
       </div>
       <textarea
         title="复制详情"
