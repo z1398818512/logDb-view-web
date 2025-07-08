@@ -71888,7 +71888,7 @@
                           l(!0),
                           (e.prev = 1),
                           (e.next = 4),
-                          fetch(MB + '/whiteUser/get')
+                          fetch(MB + '/logdb/whiteUser/get')
                         );
                       case 4:
                         return (t = e.sent), (e.next = 7), t.json();
@@ -71927,7 +71927,7 @@
                         return (
                           (e.prev = 0),
                           (e.next = 3),
-                          fetch(MB + '/whiteUser/del', {
+                          fetch(MB + '/logdb/whiteUser/del', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ name: t }),
@@ -71979,7 +71979,7 @@
                         return (
                           (e.prev = 3),
                           (e.next = 6),
-                          fetch(MB + '/whiteUser/add', {
+                          fetch(MB + '/logdb/whiteUser/add', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ name: h }),
