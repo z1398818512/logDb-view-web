@@ -13,7 +13,7 @@ export default function WhiteUser() {
   const fetchWhiteList = async () => {
     setLoading(true);
     try {
-      const response = await fetch(apiUrl + '/whiteUser/get');
+      const response = await fetch(apiUrl + '/logdb/whiteUser/get');
       const data = await response.json();
       const list = data.data;
       setDataSource(list);
@@ -27,7 +27,7 @@ export default function WhiteUser() {
   // 删除用户
   const handleDelete = async (name: string) => {
     try {
-      await fetch(apiUrl + '/whiteUser/del', {
+      await fetch(apiUrl + '/logdb/whiteUser/del', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export default function WhiteUser() {
     }
 
     try {
-      await fetch(apiUrl + '/whiteUser/add', {
+      await fetch(apiUrl + '/logdb/whiteUser/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
